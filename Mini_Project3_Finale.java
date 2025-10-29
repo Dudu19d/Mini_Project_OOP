@@ -105,7 +105,7 @@ class Shelter {
 }
 
 // Dog adoption Example
-public class ShelterApp {
+public class ShelterAnimal {
     public static void main(String[] args) {
         Shelter shelter = new Shelter();
         shelter.addAnimal(new Dog("Beethoven", 4));
@@ -114,7 +114,7 @@ public class ShelterApp {
         shelter.addVolunteer(new Volunteer("Julie"));
 
         shelter.showAnimals();
-        shelter.updateMedical("Don", "Vaccinated for rabies");
+        shelter.updateMedical("Mozart", "Vaccinated for rabies");
 
         AdoptionForm form1 = new AdoptionForm("Bob", 25, 0);
         shelter.adoptAnimal("Beethoven", form1); // Success
@@ -127,4 +127,5 @@ public class ShelterApp {
 
         shelter.showAnimals();
     }
+
 }
