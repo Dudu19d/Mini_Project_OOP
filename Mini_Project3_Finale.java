@@ -95,7 +95,7 @@ class Shelter {
             animals.remove(a);
             System.out.println(form.adopterName + " adopted " + a.getName() + "!");
         } else {
-            System.out.println("Adoption not successful (maybe rule not met or animal not found)");
+            System.out.println("Adoption not successful");
         }
     }
     public void updateMedical(String animalName, String record) {
@@ -129,3 +129,4 @@ public class ShelterAnimal {
     }
 
 }
+
