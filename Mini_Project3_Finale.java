@@ -105,7 +105,7 @@ class Shelter {
 }
 
 // Dog adoption Example
-public class ShelterAnimal {
+class ShelterAnimal {
     public static void main(String[] args) {
         Shelter shelter = new Shelter();
         shelter.addAnimal(new Dog("Beethoven", 4));
