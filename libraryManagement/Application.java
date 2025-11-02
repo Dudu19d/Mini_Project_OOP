@@ -37,11 +37,34 @@ public class Application {
                 case 6 -> searchByAuthor(library, scanner);
                 case 7 -> searchByGenre(library, scanner);
                 case 8 -> createUser(library, scanner);
+                case 9 -> borrowItem(library, scanner);
             }
             showMenu();
             options = scanner.nextInt();
         }
         scanner.close();
+    }
+
+    private static void borrowItem(Library library, Scanner scanner) {
+        System.out.print("Enter the user Id: ");
+        String userId = scanner.nextLine();
+        User user = library.findUserById(userId);
+        if (user == null){
+            System.out.println("User not found");
+        }else {
+            System.out.print("Enter the item Id: ");
+            String itemId = scanner.nextLine();
+            LibraryItem item = library.findItemById(itemId);
+            if (item == null){
+                System.out.println("Item not found");
+            }else {
+                System.out.println("The following item has been found: ");
+                printHeader();
+                System.out.println(item);
+                library.borrowItem(itemId, userId);
+            }
+        }
+        System.out.println("Enter the item id: ");
     }
 
     private static void createUser(Library library, Scanner scanner) {
@@ -156,6 +179,7 @@ public class Application {
         System.out.println("6: Search by author: ");
         System.out.println("7: Search by genre: ");
         System.out.println("8: Add user: ");
+        System.out.println("9: Borrow Item: ");
         System.out.println("0: Exit");
         System.out.print("Enter your selection: ");
     }

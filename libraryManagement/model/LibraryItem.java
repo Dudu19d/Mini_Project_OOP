@@ -28,7 +28,6 @@ public class LibraryItem implements Borrowable {
         this.borrowDate = LocalDate.now();
         this.isBorrowed = false;
         this.reservations = new ArrayList<>();
-        this.reservations.add("init");
     }
 
     public String getTitle() {
@@ -103,7 +102,7 @@ public class LibraryItem implements Borrowable {
                 String.valueOf(isBorrowed),
                 dueDate != null ? dueDate.toString() : "null",
                 borrowDate != null ? borrowDate.toString() : "null",
-                String.join(";", reservations));
+                String.join(",", reservations));
     }
     public static LibraryItem fromCSV(String line){
         String[] parts = line.split(",");
@@ -114,7 +113,13 @@ public class LibraryItem implements Borrowable {
         boolean isBorrowed = Boolean.parseBoolean(parts[4]);
         LocalDate dueDate = LocalDate.parse(parts[5]);
         LocalDate borrowDate = LocalDate.parse(parts[6]);
-        List<String> reservations = Arrays.asList(parts[7].split(";"));
+        List<String> reservations;
+        if (parts.length == 8){
+            reservations = Arrays.asList(parts[7].split(","));
+        }else {
+            reservations = new ArrayList<>();
+        }
+        System.out.println("---- parts: " +  Arrays.toString(parts));
         LibraryItem item = new LibraryItem();
 
         item.setItemId(itemId);
@@ -149,23 +154,13 @@ public class LibraryItem implements Borrowable {
 
     }
 
-//    public String toString() {
-//        return String.format("Id: %s\t | " +
-//                "Title: %s\t | " +
-//                "Author: %s\t | " +
-//                "Genre: %s\t | " +
-//                "Status: %s\t | " +
-//                "Due Date: %s\t | " +
-//                "Borrow Date: %s\t | " +
-//                "Reservations : %s\t", itemId, title, author, genre, isBorrowed, dueDate, borrowDate, reservations);
-//    }
 
     @Override
     public Boolean borrowItem(String userId) {
         if (!isBorrowed && reservations.isEmpty()){
             this.isBorrowed = true;
             this.dueDate = LocalDate.now().plusDays(30);
-            return null;
+            return true;
         }
         return false;
     }

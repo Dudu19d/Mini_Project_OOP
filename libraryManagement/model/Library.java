@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
 public class Library implements ItemReserver, ItemSearcher {
     private List<LibraryItem> items;
     private final Map<String, User> users;
-    private final Map<String, List<LibraryItem>> userBorrowItems;
+    private final Map<String, List<LibraryItem>> borrowItems;
     private final Map<String, LibraryItem> itemMap;
 
     public Library(){
         this.items = new ArrayList<>();
         this.users = new HashMap<>();
-        this.userBorrowItems = new HashMap<>();
+        this.borrowItems = new HashMap<>();
         this.itemMap = new HashMap<>();
         loadFromFiles();
     }
@@ -48,37 +48,45 @@ public class Library implements ItemReserver, ItemSearcher {
     }
     public void addUser(User user){
         users.put(user.getUserId(), user);
-        userBorrowItems.put(user.getUserId(), new ArrayList<>());
+        borrowItems.put(user.getUserId(), new ArrayList<>());
         saveData();
     }
     public User findUserById(String userId){
-        return users.get(userId);
+        return users.get(userId.toUpperCase().trim());
     }
     public boolean removeUser(String userId){
-        userBorrowItems.remove(userId);
+        borrowItems.remove(userId);
         boolean removed = users.remove(userId) != null;
         if (removed){
             saveData();
         }
         return removed;
     }
+
     public void borrowItem(String itemId, String userId){
         LibraryItem item = findItemById(itemId);
         User user = findUserById(userId);
-        if (item != null && user != null && user.canBorrowItems() && item.borrowItem(userId)){
-            userBorrowItems.get(userId).add(item);
+        if (item != null && user != null && user.canBorrowItems() && !item.borrowItem(userId)){
+            if (this.borrowItems.get(userId) == null){
+                List<LibraryItem> borrowedItems = new ArrayList<>();
+                borrowedItems.add(item);
+                this.borrowItems.put(userId, borrowedItems);
+            }else {
+                this.borrowItems.get(userId).add(item);
+            }
             if (user instanceof Member){
                 ((Member) user).addBorrowItem(item);
             }
-            saveData();
+            this.itemMap.put(item.getItemId(), item);
         }
+        saveData();
     }
     public boolean returnItem(String itemId, String userId){
         LibraryItem item = findItemById(itemId);
         User user = findUserById(userId);
 
         if (item != null && user != null && item.returnItem()){
-            userBorrowItems.get(userId).remove(item);
+            borrowItems.get(userId).remove(item);
             if (user instanceof Member){
                 ((Member) user).removeBorrowItem(item);
             }
@@ -130,7 +138,7 @@ public class Library implements ItemReserver, ItemSearcher {
         return users.values();
     }
     public List<LibraryItem> getBorrowedItemsByUser(String userId){
-        return userBorrowItems.getOrDefault(userId, new ArrayList<>());
+        return borrowItems.getOrDefault(userId, new ArrayList<>());
     }
 
     private void loadFromFiles() {
@@ -152,7 +160,7 @@ public class Library implements ItemReserver, ItemSearcher {
                     item.borrowItem(userId);
                 }
             }
-            userBorrowItems.put(userId, borrowedItems);
+            borrowItems.put(userId, borrowedItems);
             User user = users.get(userId);
             if (user instanceof Member){
                 ((Member) user).initializeBorrowedItems(borrowedItems);
@@ -166,12 +174,12 @@ public class Library implements ItemReserver, ItemSearcher {
     }
     private Map<String, List<String>> getBorrowedItemsMap(){
         Map<String, List<String>> borrowedItemsMap = new HashMap<>();
-        for (Map.Entry<String, List<LibraryItem>> entry : userBorrowItems.entrySet()){
+        for (Map.Entry<String, List<LibraryItem>> userId : borrowItems.entrySet()){
             List<String> itemsId = new ArrayList<>();
-            for (LibraryItem item : entry.getValue()){
+            for (LibraryItem item : userId.getValue()){
                 itemsId.add(item.getItemId());
             }
-            borrowedItemsMap.put(entry.getKey(), itemsId);
+            borrowedItemsMap.put(userId.getKey(), itemsId);
         }
         return borrowedItemsMap;
     }
@@ -180,7 +188,7 @@ public class Library implements ItemReserver, ItemSearcher {
        users.clear();
        for (User user : userList) {
            users.put(user.getUserId(), user);
-           userBorrowItems.put(user.getUserId(), new ArrayList<>());
+           borrowItems.put(user.getUserId(), new ArrayList<>());
        }
     }
     private void loadItemsFromFile() {

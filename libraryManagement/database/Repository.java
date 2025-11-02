@@ -53,13 +53,11 @@ public class Repository {
         }
         return items;
     }
-    public static boolean saveUsers(Collection<User> users) {
+    public static void saveUsers(Collection<User> users) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(USERS_FILE))) {
-            users.forEach(user -> {writer.println(user.toCSV());});
-            return true;
+            users.forEach(user -> writer.println(user.toCSV()));
         }catch (IOException e){
             System.err.println("Error saving users to file");
-            return false;
         }
 
     }
@@ -82,22 +80,22 @@ public class Repository {
         }
         return users;
     }
-    public static boolean saveBorrowedItems(Map<String, List<String>> borrowedItemsMap, Map<String, LibraryItem> itemMap) {
+    public static void saveBorrowedItems(Map<String, List<String>> borrowedItemsMap, Map<String, LibraryItem> itemMap) {
         try(PrintWriter writer = new PrintWriter(new FileWriter(BORROWED_ITEMS_FILE))) {
             for (Map.Entry<String, List<String>> entry : borrowedItemsMap.entrySet()){
-                String userId = entry.getKey();
                 for (String itemId : entry.getValue()){
                     LibraryItem item = itemMap.get(itemId);
-                    if (item == null){
-                        writer.println(userId + ","+itemId +","+item.getDueDate() +","+item.isBorrowed());
+                    if (item != null){
+                        item.getReservations().add(entry.getKey());
+                        System.out.println("--reservation: " + item.getReservations());
+                        writer.println(item.toCSV());
                     }
                 }
             }
-            return true;
+            writer.flush();
         }catch (IOException e){
             System.err.println("Error saving borrowed items to file");
         }
-        return false;
     }
     public static Map<String, List<String>> loadBorrowedItems(){
         Map<String, List<String>> borrowedItemsMap = new HashMap<>();
