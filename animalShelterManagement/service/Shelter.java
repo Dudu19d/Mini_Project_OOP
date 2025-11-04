@@ -1,9 +1,13 @@
-package animalShelterManagement;
+package animalShelterManagement.service;
+
+import animalShelterManagement.model.AdoptionForm;
+import animalShelterManagement.model.Animal;
+import animalShelterManagement.model.Volunteer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-// Use loops for displaying available animals and conditions for adoption eligibility with animalShelterManagement.Shelter class with animals and volunteers
+// Use loops for displaying available animals and conditions for adoption eligibility with animalShelterManagement.service.Shelter class with animals and volunteers
 public class Shelter {
     private final List<Animal> animals = new ArrayList<>();
     private final List<Volunteer> volunteers = new ArrayList<>();
@@ -25,13 +29,13 @@ public class Shelter {
         Animal a = findAnimal(animalName);
         if (a != null && a.adopt(form)) {
             animals.remove(a);
-            System.out.println(form.adopterName + " adopted " + a.getName() + "!");
+            System.out.println(form.getAdopterName() + " adopted " + a.getName() + "!");
         } else {
             System.out.println("Adoption not successful");
         }
     }
     public void updateMedical(String animalName, String record) {
         Animal a = findAnimal(animalName);
-        if (a != null) a.medicalRecord.addRecord(record);
+        if (a != null) a.getMedicalRecord().addRecord(record);
     }
 }

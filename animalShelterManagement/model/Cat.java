@@ -1,4 +1,4 @@
-package animalShelterManagement;
+package animalShelterManagement.model;
 
 //  Dog, Cat, Bird subclasses with simple adoption conditions
 public class Cat extends Animal {
@@ -16,7 +16,7 @@ public class Cat extends Animal {
 
     @Override
     public boolean adopt(AdoptionForm form) {
-        return form.adopterAge >= 18;
+        return form.getAdopterAge() >= 18;
     } // Min. age requirement
 
     @Override

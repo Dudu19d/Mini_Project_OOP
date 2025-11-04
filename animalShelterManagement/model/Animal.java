@@ -1,10 +1,19 @@
-package animalShelterManagement;
+package animalShelterManagement.model;
 
 // Create an abstract class Animal with subclasses Dog, Cat, and Bird
 
-abstract class Animal implements Adoptable {
+public abstract class Animal implements Adoptable {
     protected String name;
     protected int age;
+
+    public MedicalRecord getMedicalRecord() {
+        return medicalRecord;
+    }
+
+    public void setMedicalRecord(MedicalRecord medicalRecord) {
+        this.medicalRecord = medicalRecord;
+    }
+
     protected MedicalRecord medicalRecord;
 
     public Animal(String name, int age) {

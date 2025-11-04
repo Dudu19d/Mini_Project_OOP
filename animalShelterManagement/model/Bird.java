@@ -1,4 +1,4 @@
-package animalShelterManagement;
+package animalShelterManagement.model;
 
 public class Bird extends Animal {
     public Bird(String name, int age) {
@@ -15,7 +15,7 @@ public class Bird extends Animal {
 
     @Override
     public boolean adopt(AdoptionForm form) {
-        return form.numCatsAtHome <= 1;
+        return form.getNumCatsAtHome() <= 1;
     } // Maximum 1 cat authorized to adopt a bird
 
     @Override

@@ -1,4 +1,4 @@
-package animalShelterManagement;
+package animalShelterManagement.model;
 
 public class Dog extends Animal {
     public Dog(String name, int age) {
@@ -15,7 +15,7 @@ public class Dog extends Animal {
 
     @Override
     public boolean adopt(AdoptionForm form) {
-        return form.adopterAge >= 18;
+        return form.getAdopterAge() >= 18;
     } // Min. age requirement
 
     @Override

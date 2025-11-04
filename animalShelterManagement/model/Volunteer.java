@@ -1,4 +1,4 @@
-package animalShelterManagement;
+package animalShelterManagement.model;
 
 public class Volunteer {
     String name;

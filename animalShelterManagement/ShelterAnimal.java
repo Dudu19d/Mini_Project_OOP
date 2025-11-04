@@ -1,9 +1,16 @@
 package animalShelterManagement;
 
+import animalShelterManagement.model.AdoptionForm;
+import animalShelterManagement.model.Bird;
+import animalShelterManagement.model.Cat;
+import animalShelterManagement.model.Dog;
+import animalShelterManagement.model.Volunteer;
+import animalShelterManagement.service.Shelter;
+
 public class ShelterAnimal {
 
     public static void main(String[] args) {
-        Shelter shelter = new animalShelterManagement.Shelter();
+        Shelter shelter = new Shelter();
         shelter.addAnimal(new Dog("Beethoven", 4));
         shelter.addAnimal(new Cat("Mozart", 2));
         shelter.addAnimal(new Bird("Bach", 1));
