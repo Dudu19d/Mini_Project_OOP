@@ -11,7 +11,7 @@ class ShelterApp {
 
         do {
             System.out.println("\n--- Shelter Management Menu ---");
-            System.out.println("1. Show Animals");
+            System.out.println("1. List Animals");
             System.out.println("2. Adopt Animal");
             System.out.println("3. Update Medical Record");
             System.out.println("4. Exit");
@@ -67,7 +67,7 @@ class ShelterApp {
                     shelter.updateMedical(animalName, record);
                     break;
                 case 4:
-                    System.out.println("Exiting... Goodbye!");
+                    System.out.println("Goodbye");
                     break;
                 default:
                     System.out.println("Invalid choice, please try again.");
