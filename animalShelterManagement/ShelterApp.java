@@ -1,3 +1,7 @@
+package animalShelterManagement;
+
+import java.util.Scanner;
+
 class ShelterApp {
     public static void main(String[] args) {
         Shelter shelter = new Shelter();
